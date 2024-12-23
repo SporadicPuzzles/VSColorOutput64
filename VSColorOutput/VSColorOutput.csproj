@@ -49,6 +49,7 @@
     <NoWarn>VSTHRD010</NoWarn>
   </PropertyGroup>
   <ItemGroup>
+    <Compile Include="FindResults\WarningsCount.cs" />
     <Compile Include="Output\Classifier.cs" />
     <Compile Include="Output\GCCErrorList\GCCErrorGenerator.cs" />
     <Compile Include="Output\GCCErrorList\GCCErrorListItem.cs" />
@@ -95,10 +96,10 @@
     <Reference Include="WindowsBase" />
   </ItemGroup>
   <ItemGroup>
-    <PackageReference Include="Microsoft.VisualStudio.SDK" Version="17.4.33103.184" ExcludeAssets="runtime">
+    <PackageReference Include="Microsoft.VisualStudio.SDK" Version="17.12.40392" ExcludeAssets="runtime">
       <IncludeAssets>compile; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
     </PackageReference>
-    <PackageReference Include="Microsoft.VSSDK.BuildTools" Version="17.4.2119">
+    <PackageReference Include="Microsoft.VSSDK.BuildTools" Version="17.12.2069">
       <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
       <PrivateAssets>all</PrivateAssets>
     </PackageReference>

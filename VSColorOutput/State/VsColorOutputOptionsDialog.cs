@@ -149,6 +149,11 @@ namespace VSColorOutput.State
         [Description("Use TimeSpan format strings, NOT DateTime")]
         public string TimeStampDifference { get; set; }
 
+        [Category(ActionSubCategory)]
+        [DisplayName("Show Warning Count")]
+        [Description("Shows the number of warnings by project and total")]
+        public bool ShowWarningCount { get; set; }
+
         public override void LoadSettingsFromStorage()
         {
             var settings = Settings.Load();
@@ -185,6 +190,7 @@ namespace VSColorOutput.State
             TimeStampDifference = settings.TimeStampDifference;
 
             SuppressDonation = settings.SuppressDonation;
+            ShowWarningCount = settings.ShowWarningCount;
         }
 
         public override void SaveSettingsToStorage()
@@ -222,7 +228,8 @@ namespace VSColorOutput.State
                 TimeStampElapsed    = TimeStampElapsed,
                 TimeStampDifference = TimeStampDifference,
                 // --
-                SuppressDonation = SuppressDonation
+                SuppressDonation = SuppressDonation,
+                ShowWarningCount = ShowWarningCount
             };
             settings.Save();
         }

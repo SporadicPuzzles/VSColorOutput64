@@ -8,6 +8,7 @@ using System.Diagnostics;
 using System.Globalization;
 using System.IO;
 using System.Threading;
+using VSColorOutput.FindResults;
 using VSColorOutput.Output.TimeStamp;
 using VSColorOutput.State;
 
@@ -39,6 +40,7 @@ namespace VSColorOutput.Output.BuildEvents
         public DateTime DebugStartTime { get; private set; }
         public bool ShowDonation { get; set; }
         public static string SolutionPath { get; private set; }
+        public bool ShowWarningCount { get; set; }
 
         public void Initialize(IServiceProvider serviceProvider)
         {
@@ -109,6 +111,7 @@ namespace VSColorOutput.Output.BuildEvents
             ShowDebugWindowOnDebug = settings.ShowDebugWindowOnDebug;
             ShowTimeStamps = settings.ShowTimeStamps;
             ShowDonation = !settings.SuppressDonation;
+            ShowWarningCount = settings.ShowWarningCount;
         }
 
         /// <summary>Build is starting.</summary>
@@ -122,6 +125,8 @@ namespace VSColorOutput.Output.BuildEvents
         /// <summary>Build is complete.</summary>
         public int UpdateSolution_Done(int fSucceeded, int fModified, int fCancelCommand)
         {
+            bool BuildSucceeded = fSucceeded != 0;
+
             OutputWindowPane buildOutputPane = null;
             // ReSharper disable once LoopCanBeConvertedToQuery
             foreach (OutputWindowPane pane in _dte2.ToolWindows.OutputWindow.OutputWindowPanes)
@@ -147,6 +152,11 @@ namespace VSColorOutput.Output.BuildEvents
                 {
                     buildOutputPane.OutputString(reportItem + Environment.NewLine);
                 }
+            }
+
+            if (ShowWarningCount && BuildSucceeded)
+            {
+                WarningsCount.DisplayWarnings(buildOutputPane);
             }
 
             // Ensure the stop watch has started. A case where the start event hasn't fired has been observed.
@@ -186,6 +196,9 @@ namespace VSColorOutput.Output.BuildEvents
                 const string cancelBuildCommand = "Build.Cancel";
                 _dte2.ExecuteCommand(cancelBuildCommand);
             }
+
+            if (ShowWarningCount)
+                WarningsCount.RetrieveBuildLog(pHierProj, pCfgProj);
 
             if (ShowBuildReport)
             {
