@@ -81,6 +81,8 @@ namespace VSColorOutput.Output.BuildEvents
 
             Settings.SettingsUpdated += (sender, args) => LoadSettings();
             LoadSettings();
+
+            WarningsCount.Initialize();
         }
 
         private bool IsSolutionLoaded()

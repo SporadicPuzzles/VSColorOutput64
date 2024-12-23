@@ -49,7 +49,7 @@
     <NoWarn>VSTHRD010</NoWarn>
   </PropertyGroup>
   <ItemGroup>
-    <Compile Include="FindResults\WarningsCount.cs" />
+    <Compile Include="Output\WarningsCount.cs" />
     <Compile Include="Output\Classifier.cs" />
     <Compile Include="Output\GCCErrorList\GCCErrorGenerator.cs" />
     <Compile Include="Output\GCCErrorList\GCCErrorListItem.cs" />

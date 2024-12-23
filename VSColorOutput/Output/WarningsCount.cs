@@ -1,17 +1,39 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.IO;
+using System.Linq;
 using System.Text.RegularExpressions;
 using EnvDTE;
 using Microsoft.VisualStudio;
 using Microsoft.VisualStudio.Shell.Interop;
+using VSColorOutput.Output.ColorClassifier;
+using VSColorOutput.State;
 
 namespace VSColorOutput.FindResults
 {
     internal class WarningsCount
     {
         private static HashSet<string> _BuildLogFiles = new HashSet<string>();
-        private static Regex _WarningsRegex = new Regex(@"(\W|^)(warning|warn)\W", RegexOptions.Compiled | RegexOptions.IgnoreCase);
+
+        private static RegExClassification _defaultWarningRegex = new RegExClassification{ 
+            RegExPattern = @"(\W|^)(warning|warn)\W",
+            ClassificationType = ClassificationTypes.LogWarning, 
+            IgnoreCase = true};
+
+        private static Regex _WarningsRegex = new Regex( _defaultWarningRegex.RegExPattern, RegexOptions.Compiled);
+
+        public static void Initialize()
+        {
+            Settings.SettingsUpdated += (sender, args) => UpdateRegex();
+            UpdateRegex();
+        }
+
+        private static void UpdateRegex()
+        {
+            var settings = Settings.Load();
+            RegExClassification WarningsClassification = settings.Patterns.FirstOrDefault(x => x.ClassificationType == ClassificationTypes.LogWarning) ?? _defaultWarningRegex;
+            _WarningsRegex = new Regex(WarningsClassification.RegExPattern, RegexOptions.Compiled);
+        }
 
         public static void RetrieveBuildLog(IVsHierarchy pHierProj, IVsCfg pCfgProj)
         {
