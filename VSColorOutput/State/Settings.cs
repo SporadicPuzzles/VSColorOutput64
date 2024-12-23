@@ -90,6 +90,9 @@ namespace VSColorOutput.State
         [DataMember(Order = 21)]
         public string TimeStampDifference { get; set; } = DefaultTimeStampFormat;
 
+        [DataMember(Order = 22)]
+        public bool ShowWarningCount { get; set; }
+
         private static readonly string ProgramDataFolder = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData), "VSColorOutput64");
 
         public static event EventHandler SettingsUpdated;
